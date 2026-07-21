@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Student</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body{
+    background:#edf3fb;
+}
+.container-box{
+    max-width:800px;
+    margin:40px auto;
+}
+.card{
+    border-radius:15px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container-box">
+
+<div class="card shadow">
+
+<div class="card-header bg-warning text-dark">
+<h3>Edit Student</h3>
+</div>
+
+<div class="card-body">
+
+<form>
+
+<div class="mb-3">
+<label class="form-label">Student ID</label>
+<input id="id" type="number" class="form-control" placeholder="Enter Student ID">
+</div>
+
+<button type="button" onclick="search()" class="btn btn-primary mb-4">
+    Search Student
+</button>
+
+
+<hr>
+
+<div class="row">
+
+<div  class="col-md-6 mb-3">
+<label>Name</label>
+<input id="name" type="text" class="form-control" value="John">
+</div>
+
+<div  class="col-md-6 mb-3">
+<label>Email</label>
+<input id="email" type="email" class="form-control" value="john@gmail.com">
+</div>
+
+<div  class="col-md-6 mb-3">
+<label>Phone</label>
+<input id="phone" type="text" class="form-control" value="0712345678">
+</div>
+
+<div  class="col-md-6 mb-3">
+<label>Class Name</label>
+<input id="class_name" type="text" class="form-control" value="HND">
+</div>
+<div>
+    <button type="button" onclick="editStudent()" class="btn btn-success">
+    Update Student
+</button>
+
+
+
+<a href="dashboard.html" class="btn btn-secondary">
+Back
+</a>
+</div>
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
+
+<script>
+    async function search(){
+
+
+let id = document.getElementById("id").value;
+
+
+let response = await fetch(
+    "http://localhost:8080/student?id=" + id
+);
+
+
+if(response.ok){
+
+
+let student = await response.json();
+
+
+document.getElementById("name").value = student.name;
+
+document.getElementById("email").value = student.email;
+
+document.getElementById("phone").value = student.phone;
+
+document.getElementById("class_name").value = student.class_name;
+
+
+}
+else{
+
+alert("Student Not Found");
+
+}
+
+
+}
+async function editStudent(){
+
+
+let student = {
+
+
+id: document.getElementById("id").value,
+
+name: document.getElementById("name").value,
+
+email: document.getElementById("email").value,
+
+phone: document.getElementById("phone").value,
+
+class_name: document.getElementById("class_name").value
+
+
+};
+
+
+
+let response = await fetch(
+"http://localhost:8080/student",
+{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify(student)
+
+});
+
+
+let message = await response.text();
+
+
+alert(message);
+
+
+}
+</script>
+
